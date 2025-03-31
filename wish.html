@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>✨ 奇迹愿望单</title>
+    <style>
+        body { font-family: Arial; max-width: 800px; margin: 0 auto; padding: 20px; 
+               background: #fff9f0; color: #5a3d2b; }
+        h1 { color: #e67e22; text-align: center; }
+        .container { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
+        input, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #f0c674; border-radius: 8px; }
+        textarea { height: 120px; }
+        button { background: #e67e22; color: white; border: none; padding: 12px 25px; 
+                border-radius: 8px; cursor: pointer; font-size: 16px; }
+        #result { margin-top: 15px; padding: 10px; border-radius: 5px; text-align: center; }
+        .success { background: #e8f5e9; color: #2e7d32; }
+        .error { background: #ffebee; color: #c62828; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✨ 奇迹愿望单</h1>
+        <p>写下你对班级的期望或本学期想完成的目标</p>
+        
+        <form id="wishForm">
+            <input type="text" id="name" placeholder="你的名字（可选）">
+            <textarea id="wish" placeholder="我的愿望是..." required></textarea>
+            <button type="submit">许下愿望</button>
+        </form>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('wishForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value || "匿名同学";
+            const wish = document.getElementById('wish').value;
+            
+            fetch("https://api.github.com/repos/sheep-126/heart.github.io/issues", {
+                method: "POST",
+                headers: {
+                    "Authorization": "token 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",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    title: `[愿望单] 来自：${name}`,
+                    body: `愿望内容：\n\n${wish}\n\n---\n提交时间：${new Date().toLocaleString()}`,
+                    labels: ["wishlist"]
+                })
+            })
+            .then(response => {
+                const resultDiv = document.getElementById('result');
+                if (response.ok) {
+                    resultDiv.className = "success";
+                    resultDiv.innerHTML = "愿望已保存！✨ 可能会实现哦~";
+                    document.getElementById('wishForm').reset();
+                } else {
+                    throw new Error();
+                }
+            })
+            .catch(error => {
+                document.getElementById('result').className = "error";
+                document.getElementById('result').innerHTML = "提交失败，请稍后再试";
+            });
+        });
+    </script>
+</body>
+</html>

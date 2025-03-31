@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>💖 心灵一点通</title>
+    <style>
+        body { font-family: Arial; max-width: 800px; margin: 0 auto; padding: 20px; 
+               background: #fff0f5; color: #6b3a4a; }
+        h1 { color: #db7093; text-align: center; }
+        .container { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
+        input, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #ffb6c1; border-radius: 8px; }
+        textarea { height: 150px; }
+        button { background: #db7093; color: white; border: none; padding: 12px 25px; 
+                border-radius: 8px; cursor: pointer; font-size: 16px; }
+        #result { margin-top: 15px; padding: 10px; border-radius: 5px; text-align: center; }
+        .success { background: #e8f5e9; color: #2e7d32; }
+        .error { background: #ffebee; color: #c62828; }
+        .contact { margin-top: 20px; font-size: 14px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💖 心灵一点通</h1>
+        <p>有烦恼可以在这里倾诉，我们会保密并提供帮助</p>
+        
+        <form id="helpForm">
+            <input type="text" id="name" placeholder="你的称呼（可选）">
+            <textarea id="message" placeholder="描述你的烦恼..." required></textarea>
+            <button type="submit">寻求帮助</button>
+        </form>
+        
+        <div id="result"></div>
+        
+        <div class="contact">
+            <p>紧急联系：<br>
+            📞 心理委员：138-XXXX-XXXX<br>
+            📧 邮箱：help@example.com</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('helpForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value || "匿名同学";
+            const message = document.getElementById('message').value;
+            
+            fetch("https://api.github.com/repos/sheep-126/heart.github.io/issues", {
+                method: "POST",
+                headers: {
+                    "Authorization": "token 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",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    title: `[心理求助] 来自：${name}`,
+                    body: `求助内容：\n\n${message}\n\n---\n提交时间：${new Date().toLocaleString()}`,
+                    labels: ["help"]
+                })
+            })
+            .then(response => {
+                const resultDiv = document.getElementById('result');
+                if (response.ok) {
+                    resultDiv.className = "success";
+                    resultDiv.innerHTML = "提交成功！我们会尽快与你联系 💌";
+                    document.getElementById('helpForm').reset();
+                } else {
+                    throw new Error();
+                }
+            })
+            .catch(error => {
+                document.getElementById('result').className = "error";
+                document.getElementById('result').innerHTML = "提交失败，请直接联系上方电话";
+            });
+        });
+    </script>
+</body>
+</html>
