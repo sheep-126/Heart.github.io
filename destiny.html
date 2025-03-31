@@ -1,0 +1,22 @@
+<script>
+    const answers = [
+        "是的", "不是", "可能", "试试看", 
+        "别担心", "顺其自然", "相信你的直觉", 
+        "需要再等等", "结果会让你惊喜"
+    ];
+    
+    function getAnswer() {
+        const question = document.getElementById('question').value;
+        if(!question) {
+            alert("请先输入你的问题");
+            return;
+        }
+        const randomAnswer = answers[Math.floor(Math.random() * answers.length)];
+        document.getElementById('answer').innerText = randomAnswer;
+    }
+    </script>
+    
+    <h2>🔮 命中注定怀</h2>
+    <input type="text" id="question" placeholder="输入你的问题...">
+    <button onclick="getAnswer()">获取答案</button>
+    <p id="answer" style="font-size: 24px; color: purple;"></p>
