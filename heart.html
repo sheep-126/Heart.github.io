@@ -56,15 +56,18 @@
                 })
             })
             .then(response => {
+                console.log("Response status:", response.status); // 打印状态码
                 const resultDiv = document.getElementById('result');
                 if (response.ok) {
                     resultDiv.className = "success";
                     resultDiv.innerHTML = "提交成功！我们会尽快与你联系 💌";
                     document.getElementById('helpForm').reset();
-                } else {
+                    } else {
+                    console.error("Response status:", response.status);
+                    console.error("Response text:", response.statusText);
                     throw new Error();
-                }
-            })
+                    }
+                })
             .catch(error => {
                 console.error("Submission error:", error); // 打印错误信息
                 document.getElementById('result').className = "error";
