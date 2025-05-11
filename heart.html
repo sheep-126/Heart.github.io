@@ -66,8 +66,9 @@
                 }
             })
             .catch(error => {
+                console.error("Submission error:", error); // 打印错误信息
                 document.getElementById('result').className = "error";
-                document.getElementById('result').innerHTML = "提交失败，请直接联系上方电话";
+                document.getElementById('result').innerHTML = "提交失败，请稍后再试";
             });
         });
     </script>
